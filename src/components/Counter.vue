@@ -1,6 +1,6 @@
 <template>
   <div class="counter md-alignment-center-center">
-    <on-editable v-bind:text="this.counterName" class="counter-name" v-bind:edited="this.edited"></on-editable>
+    <on-editable class="counter-name" v-bind:edited="this.edited" v-bind:text="counterName" v-on:text-changed="changeName"></on-editable>
     <div class="md-layout">
       <md-button class="md-primary md-raised md-layout-item counter-button md-size-3x" v-on:click="decrease">-
       </md-button>
@@ -17,11 +17,12 @@ import OnEditable from "@/components/onEditable";
 export default {
   name: "Counter",
   components: {OnEditable},
-  props: {counterName: String, edited: Boolean},
+  props: {edited: Boolean},
   data: function () {
     return {
       count: 10,
       maxCount: 10,
+      counterName: ""
     }
   },
   methods: {
@@ -30,6 +31,9 @@ export default {
     },
     decrease: function () {
       this.count--;
+    },
+    changeName: function (newName){
+      this.counterName = newName;
     }
   }
 }

@@ -1,10 +1,12 @@
 <template>
-  <md-field v-if="edited">
-    <label>Counter name</label>
-    <md-input v-model="currentValue"></md-input>
-  </md-field>
-  <div v-else class="content">
-    {{ currentValue }}
+  <div class="editable">
+    <md-field v-if="edited" class="no-margin">
+      <label>Counter name</label>
+      <md-input v-model="currentValue" class="no-margin md-alignment-center-center"></md-input>
+    </md-field>
+    <div v-else class="content">
+      {{ currentValue }}
+    </div>
   </div>
 </template>
 
@@ -18,12 +20,12 @@ export default {
     }
   },
   watch: {
-    text: function (newValue){
+    text: function (newValue) {
       this.currentValue = newValue;
     },
-    edited: function (){
-      console.log(this.text, this.currentValue)
+    edited: function () {
       this.text = this.currentValue
+      this.$emit("text-changed", this.text)
     }
   }
 }
@@ -31,6 +33,18 @@ export default {
 
 <style scoped>
 .content {
-  padding-bottom: 100px;
+  padding-bottom: 0;
+  text-align: center;
+  width: auto;
+  height: auto;
+}
+
+.no-margin {
+  margin: 0;
+}
+.editable {
+  width: 100%;
+  height: 5vh;
+  margin-bottom: 1vh;
 }
 </style>

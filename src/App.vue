@@ -3,7 +3,7 @@
     <md-button class="md-icon-button top-left md-raised md-mini" @click="isEditing = !isEditing">
       <md-icon>edit</md-icon>
     </md-button>
-    <counter v-model="counterName" v-bind:edited="this.isEditing"></counter>
+    <counter v-bind:edited="this.isEditing" ></counter>
   </div>
 </template>
 
@@ -16,7 +16,7 @@ export default {
   components: {Counter},
   data: function (){
     return {
-      isEditing: false,
+      isEditing: true,
       counterName: "Counter name"
     }
   }
