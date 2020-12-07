@@ -1,24 +1,17 @@
 <template>
   <div id="app">
-    <md-button class="md-icon-button top-left md-raised md-mini" @click="isEditing = !isEditing">
-      <md-icon>edit</md-icon>
-    </md-button>
-    <counter v-bind:edited="this.isEditing" ></counter>
+    <img alt="Vue logo" src="./assets/logo.png">
+    <HelloWorld msg="Welcome to Your Vue.js App"/>
   </div>
 </template>
 
 <script>
-
-import Counter from "@/components/Counter";
+import HelloWorld from './components/HelloWorld.vue'
 
 export default {
   name: 'App',
-  components: {Counter},
-  data: function (){
-    return {
-      isEditing: true,
-      counterName: "Counter name"
-    }
+  components: {
+    HelloWorld
   }
 }
 </script>
@@ -30,10 +23,6 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-}
-
-.top-left{
-  left: 44vw;
-
+  margin-top: 60px;
 }
 </style>
