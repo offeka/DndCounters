@@ -1,23 +1,22 @@
 <template>
   <div id="app">
-    <Counter index="0"></Counter>
+    <Counter></Counter>
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import Vue, {VueConstructor} from "vue";
+import store from "@/store"
+import Counter from "@/components/Counter.vue";
 
-import store from "@/store.ts";
-import Counter from "@/components/Counter";
-
-export default {
+export default (Vue as VueConstructor).extend({
   name: 'App',
   store,
   components: {Counter}
-}
+})
 </script>
 
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
 }
 </style>

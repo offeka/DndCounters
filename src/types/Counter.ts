@@ -1,6 +1,6 @@
 export interface Counter {
-    name: String;
+    name: string;
     maxCount: number;
     currentCount: number;
-    resetOn: "ShortRest" | "LongRest"
+    resetOn: "ShortRest" | "LongRest";
 }

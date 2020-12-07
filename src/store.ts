@@ -1,6 +1,6 @@
 import Vuex, {StoreOptions} from "vuex";
-import {AppState} from "./models/AppState";
-import {Counter} from "./models/Counter";
+import {AppState} from "./types/AppState";
+import {Counter} from "./types/Counter";
 
 
 const counters: Counter[] = [{name: "test", maxCount: 10, currentCount: 10, resetOn: "LongRest"}]
