@@ -1,11 +1,11 @@
-import Vuex, {StoreOptions} from "vuex";
+import Vuex, {Store} from "vuex";
 import {AppState} from "./types/AppState";
 import {Counter} from "./types/Counter";
 
 
 const counters: Counter[] = [{name: "test", maxCount: 10, currentCount: 10, resetOn: "LongRest"}]
 
-const store: StoreOptions<AppState> = new Vuex.Store({
+const store: Store<AppState> = new Vuex.Store({
     state: {
         counters: counters,
         mode: "view"
