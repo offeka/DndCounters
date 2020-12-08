@@ -1,18 +1,18 @@
 <template>
   <div id="app">
-    <Counter v-bind:index="0"></Counter>
+    <editable-counter v-bind:index="0"></editable-counter>
   </div>
 </template>
 
 <script lang="ts">
 import Vue, {VueConstructor} from "vue";
 import store from "@/store"
-import Counter from "@/components/Counter.vue";
+import EditableCounter from "@/components/EditableCounter.vue";
 
 export default (Vue as VueConstructor).extend({
   name: 'App',
   store,
-  components: {Counter}
+  components: {EditableCounter}
 })
 </script>
 
