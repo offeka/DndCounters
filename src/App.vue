@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Counter></Counter>
+    <Counter v-bind:index="0"></Counter>
   </div>
 </template>
 

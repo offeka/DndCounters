@@ -1,6 +1,9 @@
 import Vuex, {Store} from "vuex";
 import {AppState} from "./types/AppState";
 import {Counter} from "./types/Counter";
+import Vue from "vue";
+
+Vue.use(Vuex)
 
 
 const counters: Counter[] = [{name: "test", maxCount: 10, currentCount: 10, resetOn: "LongRest"}]
@@ -12,10 +15,16 @@ const store: Store<AppState> = new Vuex.Store({
     },
     mutations: {
         increaseCounter(state, counterIndex: number) {
-            state.counters[counterIndex].currentCount++;
+            const currentCounter = state.counters[counterIndex];
+            if (currentCounter.currentCount != currentCounter.maxCount) {
+                currentCounter.currentCount++;
+            }
         },
         decreaseCounter(state, counterIndex: number) {
-            state.counters[counterIndex].currentCount--;
+            const currentCounter = state.counters[counterIndex];
+            if (currentCounter.currentCount != 0){
+                currentCounter.currentCount--;
+            }
         },
         longRest(state: AppState) {
             for (const counter of state.counters) {
@@ -35,7 +44,7 @@ const store: Store<AppState> = new Vuex.Store({
         }
     },
     getters: {
-        counterByIndex: (state: AppState) => (index: number) =>{
+        counterByIndex: (state: AppState) => (index: number) => {
             return state.counters[index];
         }
     }
