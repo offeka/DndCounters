@@ -22,7 +22,7 @@ const store: Store<AppState> = new Vuex.Store({
         },
         decreaseCounter(state, counterIndex: number) {
             const currentCounter = state.counters[counterIndex];
-            if (currentCounter.currentCount != 0){
+            if (currentCounter.currentCount != 0) {
                 currentCounter.currentCount--;
             }
         },
@@ -36,11 +36,15 @@ const store: Store<AppState> = new Vuex.Store({
                 counter.currentCount = counter.maxCount
             }
         },
-        addCounter(state, counter: Counter) {
+        addCounter(state: AppState, counter: Counter) {
             state.counters.push(counter)
         },
-        removeCounter(state, counterIndex: number) {
+        removeCounter(state: AppState, counterIndex: number) {
             state.counters.splice(counterIndex, 1)
+        },
+        updateCounter(state: AppState, params: [Counter, number]) {
+            const [newCounter, counterIndex] = params;
+            state.counters[counterIndex] = newCounter;
         }
     },
     getters: {
