@@ -1,14 +1,15 @@
 <template>
   <div class="grid-container">
-    <div class="toast" ref="toast">
-      <div class="toast-header">
-        <strong>Invalid max Count</strong>
-        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    <transition name="fade">
+      <div class="popup" v-if="!isValidNumber" v-bind:class="{displayed: !displayAlert}">
+        <div class="alert alert-danger">
+          Counter max isn't a number
+          <button type="button" class="btn-close btn-sm" aria-label="Close" @click="displayAlert=false">
+          </button>
+        </div>
+
       </div>
-    <div class="toast-body alert alert-danger" role="alert">
-      <strong>Invalid max count</strong>
-    </div>
-    </div>
+    </transition>
     <label id="counter-name">
       <input type="text" v-bind:placeholder="this.counter.name" v-model="counterName">
     </label>
@@ -26,7 +27,6 @@ import Vue, {VueConstructor} from "vue";
 import {Mode} from "@/types/AppState"
 import {Counter} from "@/types/Counter";
 import {mapState} from "vuex";
-import bootstrap from "bootstrap"
 
 export default (Vue as VueConstructor).extend({
   name: "EditableCounter",
@@ -35,11 +35,9 @@ export default (Vue as VueConstructor).extend({
     return {
       counterName: "",
       maxCount: 0,
-      isValidNumber: true
+      isValidNumber: true,
+      displayAlert: true
     }
-  },
-  mounted() {
-    bootstrap.Toast(this.$refs.toast)
   },
   computed: {
     counter(): () => Counter {
@@ -62,7 +60,7 @@ export default (Vue as VueConstructor).extend({
     maxCount(newValue: number) {
       if (isNaN(Number(newValue))) {
         this.isValidNumber = false;
-        console.log(this.$refs.toast)
+        this.displayAlert = true;
       } else {
         this.isValidNumber = true;
         this.maxCount = newValue;
@@ -101,10 +99,28 @@ input {
   padding-top: 10px;
 }
 
-.alert {
-  grid-row: 1;
+.popup {
+  z-index: 10;
   grid-column-start: 1;
   grid-column-end: 4;
-  text-align: center;
+  grid-row: 1;
+  font-size: 0.95rem;
+}
+
+.btn-close {
+  padding-top: initial;
+}
+
+.fade-leave-active, .fade-enter-active {
+  transition: opacity .3s;
+}
+
+.fade-leave-to /* .fade-leave-active below version 2.1.8 */
+{
+  opacity: 0;
+}
+
+.displayed {
+  display: none;
 }
 </style>
