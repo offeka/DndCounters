@@ -1,7 +1,7 @@
 <template>
   <div class="grid-container">
     <transition name="fade">
-      <div class="popup" v-if="!isValidNumber" v-bind:class="{displayed: !displayAlert}">
+      <div class="popup" v-if="!isValidNumber && displayAlert">
         <div class="alert alert-danger">
           Counter max isn't a number
           <button type="button" class="btn-close btn-sm" aria-label="Close" @click="displayAlert=false">
@@ -120,7 +120,4 @@ input {
   opacity: 0;
 }
 
-.displayed {
-  display: none;
-}
 </style>
