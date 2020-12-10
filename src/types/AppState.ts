@@ -1,8 +1,8 @@
-import {Counter} from "./Counter"
+import {CounterModel} from "./CounterModel"
 
 export type Mode = "edit" | "view"
 
 export interface AppState {
-    counters: Counter[];
+    counters: CounterModel[];
     mode: Mode;
 }

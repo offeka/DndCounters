@@ -1,4 +1,4 @@
-export interface Counter {
+export interface CounterModel {
     name: string;
     maxCount: number;
     currentCount: number;

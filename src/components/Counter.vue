@@ -1,6 +1,6 @@
 <template>
   <div class="grid-container">
-    <h1 class="display-5" id="name">{{ counterName }}</h1>
+    <h1 class="display-5" id="name">{{ counter.name}}</h1>
     <button id="increase" type="button" class="btn btn-primary rounded-circle" @click="increase">+</button>
     <h1 class="display-6" id="display">{{ counter.currentCount }} / {{ counter.maxCount }}</h1>
     <button id="decrease" type="button" class="btn btn-primary rounded-circle" @click="decrease">─</button>
@@ -8,18 +8,16 @@
 </template>
 
 <script lang="ts">
-import {Counter} from "@/types/Counter";
+import {CounterModel} from "@/types/CounterModel";
 import Vue, {VueConstructor} from "vue";
 
 export default (Vue as VueConstructor).extend({
   name: "Counter",
   props: {index: Number},
   computed: {
-    counter(): () => Counter {
-      return this.$store.getters.counterByIndex(this.index)
-    },
-    counterName(): () => string {
-      return this.$store.getters.counterByIndex(this.index).name
+    counter(): CounterModel {
+      console.log(this.$store.state.counters[this.index])
+      return this.$store.state.counters[this.index]
     },
   },
   methods: {
@@ -51,12 +49,15 @@ export default (Vue as VueConstructor).extend({
   grid-column: 2;
   grid-row: 2;
   text-align: center;
+  margin: auto;
 }
 
 #name {
   grid-column: 2;
   text-align: center;
+  padding-top: 5px;
 }
+
 .btn {
   height: 50px;
 }

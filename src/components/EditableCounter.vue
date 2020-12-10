@@ -24,48 +24,65 @@
 
 <script lang="ts">
 import Vue, {VueConstructor} from "vue";
-import {Mode} from "@/types/AppState"
-import {Counter} from "@/types/Counter";
+import {CounterModel} from "@/types/CounterModel";
 import {mapState} from "vuex";
+
+interface EditableData {
+  counterName: string;
+  maxCount?: number;
+  isValidNumber: boolean;
+  displayAlert: boolean;
+
+}
 
 export default (Vue as VueConstructor).extend({
   name: "EditableCounter",
   props: {index: Number},
-  data: function () {
+  data(): EditableData {
     return {
       counterName: "",
-      maxCount: 0,
+      maxCount: undefined,
       isValidNumber: true,
       displayAlert: true
     }
   },
   computed: {
-    counter(): () => Counter {
+    counter: function () {
       return this.$store.getters.counterByIndex(this.index)
     },
-    ...mapState(["mode"])
+    ...mapState(['mode']),
   },
   watch: {
-    mode(newValue: Mode) {
-      if (newValue == "edit") {
-        const newCounter: Counter = {
-          name: this.counterName,
-          maxCount: this.maxCount,
-          currentCount: this.maxCount,
-          resetOn: this.counter().resetOn
-        };
-        this.$store.commit("updateCounter", newCounter)
-      }
-    },
-    maxCount(newValue: number) {
+    maxCountLocal(newValue: number) {
       if (isNaN(Number(newValue))) {
         this.isValidNumber = false;
         this.displayAlert = true;
       } else {
         this.isValidNumber = true;
+        // eslint-disable-next-line
         this.maxCount = newValue;
       }
     }
+  },
+  beforeDestroy() {
+    let newName: string = this.counter.name;
+    if (this.counterName !== "") {
+      newName = this.counterName
+    }
+    let newMax: number = this.counter.maxCount;
+    let newCurrent: number = this.counter.currentCount;
+    if (this.maxCount !== undefined) {
+      newMax = Number(this.maxCount);
+      newCurrent = Number(this.maxCount)
+    }
+    const newCounter: CounterModel = {
+      name: newName,
+      maxCount: newMax,
+      currentCount: newCurrent,
+      resetOn: this.counter.resetOn
+    };
+    this.$store.commit("updateCounter", [newCounter, this.index])
+
   }
 })
 </script>
@@ -104,6 +121,8 @@ input {
   grid-column-start: 1;
   grid-column-end: 4;
   grid-row: 1;
+  margin-bottom: 2px;
+  height: 20px;
   font-size: 0.95rem;
 }
 
@@ -115,8 +134,7 @@ input {
   transition: opacity .3s;
 }
 
-.fade-leave-to /* .fade-leave-active below version 2.1.8 */
-{
+.fade-leave-to {
   opacity: 0;
 }
 

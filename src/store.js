@@ -1,23 +1,25 @@
 import Vuex from "vuex";
 import Vue from "vue";
+import VuexPersistence from "vuex-persist";
 Vue.use(Vuex);
-const counters = [{ name: "test", maxCount: 10, currentCount: 10, resetOn: "LongRest" }];
+const vuexPersist = new VuexPersistence({
+    storage: window.localStorage
+});
 const store = new Vuex.Store({
+    // plugins: [vuexPersist.plugin],
     state: {
-        counters: counters,
+        counters: [{ name: "test", maxCount: 10, resetOn: "ShortRest", currentCount: 8 }],
         mode: "view"
     },
     mutations: {
         increaseCounter(state, counterIndex) {
-            const currentCounter = state.counters[counterIndex];
-            if (currentCounter.currentCount != currentCounter.maxCount) {
-                currentCounter.currentCount++;
+            if (state.counters[counterIndex].currentCount != state.counters[counterIndex].maxCount) {
+                state.counters[counterIndex].currentCount++;
             }
         },
         decreaseCounter(state, counterIndex) {
-            const currentCounter = state.counters[counterIndex];
-            if (currentCounter.currentCount != 0) {
-                currentCounter.currentCount--;
+            if (state.counters[counterIndex].currentCount != 0) {
+                state.counters[counterIndex].currentCount--;
             }
         },
         longRest(state) {
@@ -38,7 +40,15 @@ const store = new Vuex.Store({
         },
         updateCounter(state, params) {
             const [newCounter, counterIndex] = params;
-            state.counters[counterIndex] = newCounter;
+            Vue.set(state.counters, counterIndex, newCounter);
+        },
+        changeMode(state) {
+            if (state.mode === "edit") {
+                state.mode = "view";
+            }
+            else {
+                state.mode = "edit";
+            }
         }
     },
     getters: {
