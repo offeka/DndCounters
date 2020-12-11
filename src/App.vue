@@ -3,11 +3,16 @@
     <button class="btn rounded-circle edit-button btn-dark" @click="changeMode">
       edit
     </button>
-    <button class="btn rounded-circle edit-button btn-dark" @click="addCounter">
+    <button
+      class="btn rounded-circle edit-button btn-dark"
+      v-bind:disabled="this.$store.state.mode === 'edit'"
+      @click="addCounter"
+    >
       Add Counter
     </button>
     <button
       class="btn rounded-circle edit-button btn-dark"
+      v-bind:disabled="this.$store.state.mode === 'edit'"
       @click="removeCounters"
     >
       Remove Selected Counters
