@@ -1,37 +1,52 @@
 <template>
   <div class="grid-container">
-    <h1 class="display-5" id="name">{{ counter.name}}</h1>
-    <button id="increase" type="button" class="btn btn-primary rounded-circle" @click="increase">+</button>
-    <h1 class="display-6" id="display">{{ counter.currentCount }} / {{ counter.maxCount }}</h1>
-    <button id="decrease" type="button" class="btn btn-primary rounded-circle" @click="decrease">─</button>
+    <h1 class="display-5" id="name">{{ counter.name }}</h1>
+    <button
+      id="increase"
+      type="button"
+      class="btn btn-primary rounded-circle"
+      @click="increase"
+    >
+      +
+    </button>
+    <h1 class="display-6" id="display">
+      {{ counter.currentCount }} / {{ counter.maxCount }}
+    </h1>
+    <button
+      id="decrease"
+      type="button"
+      class="btn btn-primary rounded-circle"
+      @click="decrease"
+    >
+      ─
+    </button>
   </div>
 </template>
 
 <script lang="ts">
-import {CounterModel} from "@/types/CounterModel";
-import Vue, {VueConstructor} from "vue";
+import { CounterModel } from "@/types/CounterModel";
+import Vue, { VueConstructor } from "vue";
 
 export default (Vue as VueConstructor).extend({
   name: "Counter",
-  props: {index: Number},
+  props: { index: Number },
   computed: {
     counter(): CounterModel {
-      return this.$store.state.counters[this.index]
+      return this.$store.state.counters[this.index];
     },
   },
   methods: {
-    increase: function () {
-      this.$store.commit("increaseCounter", this.index)
+    increase: function() {
+      this.$store.commit("increaseCounter", this.index);
     },
-    decrease: function () {
-      this.$store.commit("decreaseCounter", this.index)
-    }
-  }
-})
+    decrease: function() {
+      this.$store.commit("decreaseCounter", this.index);
+    },
+  },
+});
 </script>
 
 <style scoped>
-
 #increase {
   grid-column: 3;
   grid-row: 2;
