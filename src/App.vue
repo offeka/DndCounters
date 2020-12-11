@@ -6,6 +6,12 @@
     <button class="btn rounded-circle edit-button btn-dark" @click="addCounter">
       Add Counter
     </button>
+    <button
+      class="btn rounded-circle edit-button btn-dark"
+      @click="removeCounters"
+    >
+      Remove Selected Counters
+    </button>
     <CountersView class="view"></CountersView>
   </div>
 </template>
@@ -28,8 +34,12 @@ export default (Vue as VueConstructor).extend({
         name: "new Counter",
         maxCount: 10,
         currentCount: 0,
+        selected: false,
         resetOn: "ShortRest",
       });
+    },
+    removeCounters(): void {
+      this.$store.commit("removeSelectedCounters");
     },
   },
 });
