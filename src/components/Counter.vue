@@ -20,9 +20,7 @@
     >
       ─
     </button>
-    <button @click="select">
-      {{ this.counter.selected ? "selected" : "unselected" }}
-    </button>
+    <input type="checkbox" @click="select" v-model="this.counter.selected" />
   </div>
 </template>
 
