@@ -20,6 +20,9 @@
     >
       ─
     </button>
+    <button @click="select">
+      {{ this.counter.selected ? "selected" : "unselected" }}
+    </button>
   </div>
 </template>
 
@@ -41,6 +44,9 @@ export default (Vue as VueConstructor).extend({
     },
     decrease: function() {
       this.$store.commit("decreaseCounter", this.index);
+    },
+    select: function() {
+      this.$store.commit("toggleCounterSelection", this.index);
     },
   },
 });
