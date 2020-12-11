@@ -4,53 +4,76 @@
       <div class="popup" v-if="!isValidNumber && displayAlert">
         <div class="alert alert-danger">
           Counter max isn't a number
-          <button type="button" class="btn-close btn-sm" aria-label="Close" @click="displayAlert=false">
-          </button>
+          <button
+            type="button"
+            class="btn-close btn-sm"
+            aria-label="Close"
+            @click="displayAlert = false"
+          ></button>
         </div>
-
       </div>
     </transition>
     <label id="counter-name">
-      <input type="text" v-bind:placeholder="this.counter.name" v-model="counterName">
+      <input
+        type="text"
+        v-bind:placeholder="this.counter.name"
+        v-model="counterName"
+      />
     </label>
-    <button id="increase" type="button" class="btn btn-primary rounded-circle">+</button>
+    <button id="increase" type="button" class="btn btn-primary rounded-circle">
+      +
+    </button>
     <label id="counter-max">
-      <input type="text" v-bind:placeholder="this.counter.maxCount" v-model="maxCount">
+      <input
+        type="text"
+        v-bind:placeholder="this.counter.maxCount"
+        v-model="maxCount"
+      />
     </label>
-    <button id="decrease" type="button" class="btn btn-primary rounded-circle">─</button>
-
+    <button id="decrease" type="button" class="btn btn-primary rounded-circle">
+      ─
+    </button>
+    <button type="button" @click="removeCounter">remove Counter</button>
   </div>
 </template>
 
 <script lang="ts">
-import Vue, {VueConstructor} from "vue";
-import {CounterModel} from "@/types/CounterModel";
-import {mapState} from "vuex";
+import Vue, { VueConstructor } from "vue";
+import { CounterModel } from "@/types/CounterModel";
+import { mapState } from "vuex";
 
 interface EditableData {
   counterName: string;
   maxCount?: number;
   isValidNumber: boolean;
   displayAlert: boolean;
-
 }
 
 export default (Vue as VueConstructor).extend({
   name: "EditableCounter",
-  props: {index: Number},
+  props: { index: Number },
   data(): EditableData {
     return {
       counterName: "",
       maxCount: undefined,
       isValidNumber: true,
-      displayAlert: true
-    }
+      displayAlert: true,
+    };
+  },
+  methods: {
+    removeCounter: function() {
+      this.$store.commit({
+        type: "removeCounter",
+        state: this.$store.state,
+        counterIndex: this.index,
+      });
+    },
   },
   computed: {
-    counter: function () {
-      return this.$store.getters.counterByIndex(this.index)
+    counter: function() {
+      return this.$store.getters.counterByIndex(this.index);
     },
-    ...mapState(['mode']),
+    ...mapState(["mode"]),
   },
   watch: {
     maxCountLocal(newValue: number) {
@@ -62,29 +85,28 @@ export default (Vue as VueConstructor).extend({
         // eslint-disable-next-line
         this.maxCount = newValue;
       }
-    }
+    },
   },
   beforeDestroy() {
     let newName: string = this.counter.name;
     if (this.counterName !== "") {
-      newName = this.counterName
+      newName = this.counterName;
     }
     let newMax: number = this.counter.maxCount;
     let newCurrent: number = this.counter.currentCount;
     if (this.maxCount !== undefined) {
       newMax = Number(this.maxCount);
-      newCurrent = Number(this.maxCount)
+      newCurrent = Number(this.maxCount);
     }
     const newCounter: CounterModel = {
       name: newName,
       maxCount: newMax,
       currentCount: newCurrent,
-      resetOn: this.counter.resetOn
+      resetOn: this.counter.resetOn,
     };
-    this.$store.commit("updateCounter", [newCounter, this.index])
-
-  }
-})
+    this.$store.commit("updateCounter", [newCounter, this.index]);
+  },
+});
 </script>
 
 <style scoped>
@@ -136,12 +158,12 @@ input {
   margin: auto;
 }
 
-.fade-leave-active, .fade-enter-active {
-  transition: opacity .3s;
+.fade-leave-active,
+.fade-enter-active {
+  transition: opacity 0.3s;
 }
 
 .fade-leave-to {
   opacity: 0;
 }
-
 </style>
