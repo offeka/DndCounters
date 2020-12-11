@@ -33,7 +33,6 @@
     <button id="decrease" type="button" class="btn btn-primary rounded-circle">
       ─
     </button>
-    <button type="button" @click="removeCounter">remove Counter</button>
   </div>
 </template>
 
@@ -59,15 +58,6 @@ export default (Vue as VueConstructor).extend({
       isValidNumber: true,
       displayAlert: true,
     };
-  },
-  methods: {
-    removeCounter: function() {
-      this.$store.commit({
-        type: "removeCounter",
-        state: this.$store.state,
-        counterIndex: this.index,
-      });
-    },
   },
   computed: {
     counter: function() {
@@ -102,6 +92,7 @@ export default (Vue as VueConstructor).extend({
       name: newName,
       maxCount: newMax,
       currentCount: newCurrent,
+      selected: this.counter.selected,
       resetOn: this.counter.resetOn,
     };
     this.$store.commit("updateCounter", [newCounter, this.index]);
