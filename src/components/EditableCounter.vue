@@ -130,6 +130,12 @@ input {
   padding-top: initial;
 }
 
+.btn {
+  height: 50px;
+  width: 50px;
+  margin: auto;
+}
+
 .fade-leave-active, .fade-enter-active {
   transition: opacity .3s;
 }

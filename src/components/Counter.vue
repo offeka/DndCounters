@@ -16,7 +16,6 @@ export default (Vue as VueConstructor).extend({
   props: {index: Number},
   computed: {
     counter(): CounterModel {
-      console.log(this.$store.state.counters[this.index])
       return this.$store.state.counters[this.index]
     },
   },
@@ -50,15 +49,19 @@ export default (Vue as VueConstructor).extend({
   grid-row: 2;
   text-align: center;
   margin: auto;
+  font-size: 2rem;
 }
 
 #name {
   grid-column: 2;
   text-align: center;
   padding-top: 5px;
+  font-size: 2.5rem;
 }
 
 .btn {
   height: 50px;
+  width: 50px;
+  margin: auto;
 }
 </style>

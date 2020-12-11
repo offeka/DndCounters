@@ -6,7 +6,7 @@ const vuexPersist = new VuexPersistence({
     storage: window.localStorage
 });
 const store = new Vuex.Store({
-    // plugins: [vuexPersist.plugin],
+    plugins: [vuexPersist.plugin],
     state: {
         counters: [{ name: "test", maxCount: 10, resetOn: "ShortRest", currentCount: 8 }],
         mode: "view"

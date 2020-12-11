@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <button class="btn rounded-circle" @click="changeMode">edit</button>
-    <CountersView></CountersView>
+    <button class="btn rounded-circle edit-button btn-dark" @click="changeMode">edit</button>
+    <CountersView class="view"></CountersView>
   </div>
 </template>
 
@@ -24,5 +24,10 @@ export default (Vue as VueConstructor).extend({
 
 <style>
 #app {
+}
+.edit-button {
+  margin-left: 80vw;
+}
+.view {
 }
 </style>

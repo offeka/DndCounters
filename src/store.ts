@@ -12,7 +12,7 @@ const vuexPersist = new VuexPersistence<AppState>({
 
 
 const store: Store<AppState> = new Vuex.Store({
-    // plugins: [vuexPersist.plugin],
+    plugins: [vuexPersist.plugin],
     state: {
         counters: [{name: "test", maxCount: 10, resetOn: "ShortRest", currentCount: 8}],
         mode: "view"
