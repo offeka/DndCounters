@@ -1,15 +1,39 @@
 <template>
   <div class="grid-container" v-bind:class="deleted ? 'deleted' : ''">
     <transition name="fade">
-      <div class="popup" v-if="!isValidNumber && displayAlert">
+      <div class="popup" v-if="displayAlert || !isValidNumber">
         <div class="alert alert-danger">
-          Counter max isn't a number
-          <button
-            type="button"
-            class="btn-close btn-sm"
-            aria-label="Close"
-            @click="displayAlert = false"
-          ></button>
+          {{
+            !isValidNumber
+              ? "Counter max isn't a number"
+              : "Are you sure you want to delete this counter?"
+          }}
+          <div v-if="isValidNumber">
+            <button
+              type="button"
+              class="btn"
+              aria-label="Close"
+              @click="displayAlert = false"
+            >
+              👎
+            </button>
+            <button
+              @click="removeCounter"
+              type="button"
+              class="btn"
+              aria-label="confirm"
+            >
+              👍
+            </button>
+          </div>
+          <div v-else>
+            <button
+              type="button"
+              class="btn-close btn-sm"
+              aria-label="Close"
+              @click="displayAlert = false"
+            ></button>
+          </div>
         </div>
       </div>
     </transition>
@@ -33,7 +57,7 @@
     <button id="decrease" type="button" class="btn btn-primary rounded-circle">
       ─
     </button>
-    <button @click="removeCounter" id="delete-button">X</button>
+    <button @click="displayAlert = true" id="delete-button">X</button>
   </div>
 </template>
 
@@ -58,7 +82,7 @@ export default (Vue as VueConstructor).extend({
       counterName: "",
       maxCount: undefined,
       isValidNumber: true,
-      displayAlert: true,
+      displayAlert: false,
       deleted: false,
     };
   },
@@ -80,7 +104,6 @@ export default (Vue as VueConstructor).extend({
         this.displayAlert = true;
       } else {
         this.isValidNumber = true;
-        // eslint-disable-next-line
         this.maxCount = newValue;
       }
     },
@@ -128,6 +151,7 @@ input {
   grid-column: 2;
   grid-row: 1;
   justify-content: center;
+  outline: none;
   align-items: center;
   width: fit-content;
   transition: ease 0.3s;
@@ -186,6 +210,11 @@ input {
   height: 50px;
   width: 50px;
   margin: auto;
+  border: solid 1px #0066cc;
+}
+
+.btn:hover {
+  background-color: #0066cc;
 }
 
 .fade-leave-active,
