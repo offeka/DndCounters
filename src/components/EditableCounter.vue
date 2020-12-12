@@ -33,7 +33,7 @@
     <button id="decrease" type="button" class="btn btn-primary rounded-circle">
       ─
     </button>
-    <button @click="removeCounter">X</button>
+    <button @click="removeCounter" id="delete-button">X</button>
   </div>
 </template>
 
@@ -117,6 +117,27 @@ input {
   width: 120px;
 }
 
+#delete-button {
+  border: none;
+  color: white;
+  font-weight: bold;
+  background-color: #0066cc;
+  padding: 20px;
+  border-radius: 100%;
+  display: flex;
+  grid-column: 2;
+  grid-row: 1;
+  justify-content: center;
+  align-items: center;
+  width: fit-content;
+  transition: ease 0.3s;
+}
+
+#delete-button:hover {
+  color: black;
+  background-color: red;
+}
+
 .deleted {
   opacity: 0;
   visibility: hidden;
@@ -125,7 +146,7 @@ input {
 
 #counter-name {
   grid-column: 2;
-  grid-row: 1;
+  grid-row: 2;
   padding-top: 10px;
 }
 
@@ -143,7 +164,7 @@ input {
 
 #counter-max {
   grid-column: 2;
-  grid-row: 2;
+  grid-row: 3;
   padding-top: 10px;
 }
 
