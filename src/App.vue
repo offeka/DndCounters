@@ -42,6 +42,7 @@ export default (Vue as VueConstructor).extend({
         selected: false,
         resetOn: "ShortRest",
       });
+      this.changeMode();
     },
     removeCounters(): void {
       this.$store.commit("removeSelectedCounters");
