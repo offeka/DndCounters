@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <NavBar appTitle="D&D Counters" />
+
     <CountersView class="view"></CountersView>
   </div>
 </template>
@@ -15,11 +16,6 @@ export default (Vue as VueConstructor).extend({
   name: "App",
   store,
   components: { CountersView, NavBar },
-  methods: {
-    changeMode(): void {
-      this.$store.commit("changeMode");
-    },
-  },
 });
 </script>
 

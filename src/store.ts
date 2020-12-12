@@ -14,7 +14,7 @@ const vuexPersist = new VuexPersistence<AppState>({
 const store: Store<AppState> = new Vuex.Store({
     plugins: [vuexPersist.plugin],
     state: {
-        counters: [{name: "test", maxCount: 10, resetOn: "ShortRest", currentCount: 8}],
+        counters: [{ name: "test", maxCount: 10, resetOn: "ShortRest", currentCount: 8, selected: false }],
         mode: "view"
     },
     mutations: {
@@ -41,12 +41,20 @@ const store: Store<AppState> = new Vuex.Store({
         addCounter(state: AppState, counter: CounterModel) {
             state.counters.push(counter)
         },
+        removeSelectedCounters(state: AppState) {
+            state.counters = state.counters.filter(counter => !counter.selected );
+        },
         removeCounter(state: AppState, counterIndex: number) {
-            state.counters.splice(counterIndex, 1)
+            if (counterIndex > -1) {
+                state.counters.splice(counterIndex, 1);
+            }
         },
         updateCounter(state: AppState, params: [CounterModel, number]) {
             const [newCounter, counterIndex] = params;
             Vue.set(state.counters, counterIndex, newCounter)
+        },
+        toggleCounterSelection(state: AppState, counterIndex: number) {
+            state.counters[counterIndex].selected = !state.counters[counterIndex].selected;
         },
         changeMode(state: AppState) {
             if (state.mode === "edit") {

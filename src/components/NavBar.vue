@@ -8,18 +8,47 @@
       <button @click="changeMode" class="navbar-button">
         {{ this.$store.state.mode === "edit" ? "Save" : "Edit" }}
       </button>
+      <button
+        class="navbar-button"
+        :class="this.$store.state.mode === 'edit' ? 'disabled' : ''"
+        @click="addCounter"
+      >
+        Add Counter
+      </button>
+      <button
+        class="navbar-button"
+        :class="this.$store.state.mode === 'edit' ? 'disabled' : ''"
+        @click="removeCounters"
+      >
+        Remove Selected Counters
+      </button>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
+import store from "@/store";
 export default Vue.extend({
   name: "NavBar",
+  store,
   props: { appTitle: String },
   methods: {
     changeMode(): void {
       this.$store.commit("changeMode");
+    },
+    addCounter(): void {
+      this.$store.commit("addCounter", {
+        name: "new Counter",
+        maxCount: 10,
+        currentCount: 0,
+        selected: false,
+        resetOn: "ShortRest",
+      });
+      this.changeMode();
+    },
+    removeCounters(): void {
+      this.$store.commit("removeSelectedCounters");
     },
   },
 });
@@ -73,5 +102,11 @@ export default Vue.extend({
 .navbar-button:hover {
   background-color: #478fd6;
   font-weight: bolder;
+}
+
+.disabled {
+  background-color: #478fd6;
+  pointer-events: none;
+  cursor: not-allowed;
 }
 </style>
