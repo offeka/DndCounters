@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <button class="btn rounded-circle edit-button btn-dark" @click="changeMode">
-      edit
+      {{ this.$store.state.mode === "edit" ? "save changes" : "edit" }}
     </button>
     <button
       class="btn rounded-circle edit-button btn-dark"
