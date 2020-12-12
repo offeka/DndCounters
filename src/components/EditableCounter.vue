@@ -10,20 +10,20 @@
           }}
           <div v-if="isValidNumber">
             <button
-              type="button"
-              class="btn"
-              aria-label="Close"
-              @click="displayAlert = false"
-            >
-              👎
-            </button>
-            <button
               @click="removeCounter"
               type="button"
               class="btn"
               aria-label="confirm"
             >
               👍
+            </button>
+            <button
+              type="button"
+              class="btn"
+              aria-label="Close"
+              @click="displayAlert = false"
+            >
+              👎
             </button>
           </div>
           <div v-else>
