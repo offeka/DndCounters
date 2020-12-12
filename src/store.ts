@@ -30,12 +30,13 @@ const store: Store<AppState> = new Vuex.Store({
         },
         longRest(state: AppState) {
             for (const counter of state.counters) {
-                counter.currentCount = counter.maxCount
+                counter.currentCount = counter.maxCount;
             }
         },
         shortRest(state: AppState) {
+            console.log("here");
             for (const counter of state.counters.filter((counter) => counter.resetOn === "ShortRest")) {
-                counter.currentCount = counter.maxCount
+                counter.currentCount = counter.maxCount;
             }
         },
         addCounter(state: AppState, counter: CounterModel) {
