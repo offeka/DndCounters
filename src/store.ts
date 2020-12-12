@@ -44,6 +44,11 @@ const store: Store<AppState> = new Vuex.Store({
         removeSelectedCounters(state: AppState) {
             state.counters = state.counters.filter(counter => !counter.selected );
         },
+        removeCounter(state: AppState, counterIndex: number) {
+            if (counterIndex > -1) {
+                state.counters.splice(counterIndex, 1);
+            }
+        },
         updateCounter(state: AppState, params: [CounterModel, number]) {
             const [newCounter, counterIndex] = params;
             Vue.set(state.counters, counterIndex, newCounter)
