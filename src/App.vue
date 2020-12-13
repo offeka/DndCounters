@@ -15,16 +15,11 @@ import NavBar from "@/components/NavBar.vue";
 export default (Vue as VueConstructor).extend({
   name: "App",
   store,
-  components: { CountersView, NavBar },
+  components: { CountersView, NavBar}
 });
 </script>
 
 <style>
 #app {
-}
-.edit-button {
-  margin-left: 80vw;
-}
-.view {
 }
 </style>
