@@ -28,7 +28,6 @@ const store = new Vuex.Store({
             }
         },
         shortRest(state) {
-            console.log("here");
             for (const counter of state.counters.filter((counter) => counter.resetOn === "ShortRest")) {
                 counter.currentCount = counter.maxCount;
             }

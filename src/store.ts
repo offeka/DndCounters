@@ -34,7 +34,6 @@ const store: Store<AppState> = new Vuex.Store({
             }
         },
         shortRest(state: AppState) {
-            console.log("here");
             for (const counter of state.counters.filter((counter) => counter.resetOn === "ShortRest")) {
                 counter.currentCount = counter.maxCount;
             }

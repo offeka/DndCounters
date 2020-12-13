@@ -1,39 +1,34 @@
 <template>
   <div>
-    <button type="button" class="btn rounded-circle btn-dark" data-toggle="modal" data-target="#exampleModal">
+    <button type="button" class="btn rounded-circle btn-dark" data-toggle="modal" data-target="#rest-modal">
       Rest
     </button>
-
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-         aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Rests</h5>
-          </div>
-          <div class="modal-body">
-            Choose your rest.
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-primary" data-dismiss="modal" @click="longRest">Long
-              rest
-            </button>
-            <button type="button" class="btn btn-primary" data-dismiss="modal" @click="shortRest">Short
-              rest
-            </button>
-          </div>
+    <modal modal-name="rest-modal">
+      <template v-slot:modal-body>
+          Choose your rest type
+      </template>
+      <template v-slot:modal-footer>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal" @click="longRest">Long
+            rest
+          </button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal" @click="shortRest">Short
+            rest
+          </button>
         </div>
-      </div>
-    </div>
+      </template>
+    </modal>
   </div>
 </template>
 
 <script lang="ts">
 import Vue, {VueConstructor} from "vue";
 import {mapMutations} from "vuex";
+import Modal from "@/components/Modal.vue";
 
 export default (Vue as VueConstructor).extend({
   name: "RestButton",
+  components: {Modal},
   methods: {
     ...mapMutations(["longRest", "shortRest"])
   }
