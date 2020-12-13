@@ -213,11 +213,11 @@ input {
   border: solid 1px #0066cc;
 }
 
-.btn:hover {
+<<<<<<< head ======= .btn:hover {
   background-color: #0066cc;
 }
 
-.fade-leave-active,
+>>>>>>>1b1edfc4e211e5258c74678ae906aab657fa70ce .fade-leave-active,
 .fade-enter-active {
   transition: opacity 0.3s;
 }
