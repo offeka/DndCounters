@@ -1,56 +1,101 @@
 <template>
-  <div class="grid-container">
+  <div class="grid-container" v-bind:class="deleted ? 'deleted' : ''">
     <transition name="fade">
-      <div class="popup" v-if="!isValidNumber && displayAlert">
+      <div class="popup" v-if="displayAlert || !isValidNumber">
         <div class="alert alert-danger">
-          Counter max isn't a number
-          <button type="button" class="btn-close btn-sm" aria-label="Close" @click="displayAlert=false">
-          </button>
+          {{
+            !isValidNumber
+              ? "Counter max isn't a number"
+              : "Are you sure you want to delete this counter?"
+          }}
+          <div v-if="isValidNumber">
+            <button
+              @click="removeCounter"
+              type="button"
+              class="btn"
+              aria-label="confirm"
+            >
+              👍
+            </button>
+            <button
+              type="button"
+              class="btn"
+              aria-label="Close"
+              @click="displayAlert = false"
+            >
+              👎
+            </button>
+          </div>
+          <div v-else>
+            <button
+              type="button"
+              class="btn-close btn-sm"
+              aria-label="Close"
+              @click="displayAlert = false"
+            ></button>
+          </div>
         </div>
-
       </div>
     </transition>
     <label id="counter-name">
-      <input type="text" v-bind:placeholder="this.counter.name" v-model="counterName">
+      <input
+        type="text"
+        v-bind:placeholder="this.counter.name"
+        v-model="counterName"
+      />
     </label>
-    <button id="increase" type="button" class="btn btn-primary rounded-circle">+</button>
+    <button id="increase" type="button" class="btn btn-primary rounded-circle">
+      +
+    </button>
     <label id="counter-max">
-      <input type="text" v-bind:placeholder="this.counter.maxCount" v-model="maxCount">
+      <input
+        type="text"
+        v-bind:placeholder="this.counter.maxCount"
+        v-model="maxCount"
+      />
     </label>
-    <button id="decrease" type="button" class="btn btn-primary rounded-circle">─</button>
-
+    <button id="decrease" type="button" class="btn btn-primary rounded-circle">
+      ─
+    </button>
+    <button @click="displayAlert = true" id="delete-button">X</button>
   </div>
 </template>
 
 <script lang="ts">
-import Vue, {VueConstructor} from "vue";
-import {CounterModel} from "@/types/CounterModel";
-import {mapState} from "vuex";
+import Vue, { VueConstructor } from "vue";
+import { CounterModel } from "@/types/CounterModel";
+import { mapState } from "vuex";
 
 interface EditableData {
   counterName: string;
   maxCount?: number;
   isValidNumber: boolean;
   displayAlert: boolean;
-
+  deleted: boolean;
 }
 
 export default (Vue as VueConstructor).extend({
   name: "EditableCounter",
-  props: {index: Number},
+  props: { index: Number },
   data(): EditableData {
     return {
       counterName: "",
       maxCount: undefined,
       isValidNumber: true,
-      displayAlert: true
-    }
+      displayAlert: false,
+      deleted: false,
+    };
+  },
+  methods: {
+    removeCounter: function() {
+      this.deleted = true;
+    },
   },
   computed: {
-    counter: function () {
-      return this.$store.getters.counterByIndex(this.index)
+    counter: function() {
+      return this.$store.getters.counterByIndex(this.index);
     },
-    ...mapState(['mode']),
+    ...mapState(["mode"]),
   },
   watch: {
     maxCountLocal(newValue: number) {
@@ -59,32 +104,35 @@ export default (Vue as VueConstructor).extend({
         this.displayAlert = true;
       } else {
         this.isValidNumber = true;
-        // eslint-disable-next-line
         this.maxCount = newValue;
       }
-    }
+    },
   },
   beforeDestroy() {
-    let newName: string = this.counter.name;
-    if (this.counterName !== "") {
-      newName = this.counterName
+    if (!this.deleted && this.counter) {
+      let newName: string = this.counter.name;
+      if (this.counterName !== "") {
+        newName = this.counterName;
+      }
+      let newMax: number = this.counter.maxCount;
+      let newCurrent: number = this.counter.currentCount;
+      if (this.maxCount !== undefined) {
+        newMax = Number(this.maxCount);
+        newCurrent = Number(this.maxCount);
+      }
+      const newCounter: CounterModel = {
+        name: newName,
+        maxCount: newMax,
+        currentCount: newCurrent,
+        selected: this.counter.selected,
+        resetOn: this.counter.resetOn,
+      };
+      this.$store.commit("updateCounter", [newCounter, this.index]);
+    } else {
+      this.$store.commit("removeCounter", this.index);
     }
-    let newMax: number = this.counter.maxCount;
-    let newCurrent: number = this.counter.currentCount;
-    if (this.maxCount !== undefined) {
-      newMax = Number(this.maxCount);
-      newCurrent = Number(this.maxCount)
-    }
-    const newCounter: CounterModel = {
-      name: newName,
-      maxCount: newMax,
-      currentCount: newCurrent,
-      resetOn: this.counter.resetOn
-    };
-    this.$store.commit("updateCounter", [newCounter, this.index])
-
-  }
-})
+  },
+});
 </script>
 
 <style scoped>
@@ -92,9 +140,37 @@ input {
   width: 120px;
 }
 
-#counter-name {
+#delete-button {
+  border: none;
+  color: white;
+  font-weight: bold;
+  background-color: #0066cc;
+  padding: 20px;
+  border-radius: 100%;
+  display: flex;
   grid-column: 2;
   grid-row: 1;
+  justify-content: center;
+  outline: none;
+  align-items: center;
+  width: fit-content;
+  transition: ease 0.3s;
+}
+
+#delete-button:hover {
+  color: black;
+  background-color: red;
+}
+
+.deleted {
+  opacity: 0;
+  visibility: hidden;
+  display: none;
+}
+
+#counter-name {
+  grid-column: 2;
+  grid-row: 2;
   padding-top: 10px;
 }
 
@@ -112,7 +188,7 @@ input {
 
 #counter-max {
   grid-column: 2;
-  grid-row: 2;
+  grid-row: 3;
   padding-top: 10px;
 }
 
@@ -134,14 +210,19 @@ input {
   height: 50px;
   width: 50px;
   margin: auto;
+  border: solid 1px #0066cc;
 }
 
-.fade-leave-active, .fade-enter-active {
-  transition: opacity .3s;
+.btn:hover {
+  background-color: #0066cc;
+}
+
+.fade-leave-active,
+.fade-enter-active {
+  transition: opacity 0.3s;
 }
 
 .fade-leave-to {
   opacity: 0;
 }
-
 </style>
