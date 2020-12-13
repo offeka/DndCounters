@@ -11,12 +11,11 @@ import Vue, { VueConstructor } from "vue";
 import store from "@/store";
 import CountersView from "@/components/CountersView.vue";
 import NavBar from "@/components/NavBar.vue";
-import RestButton from "@/components/RestButton.vue";
 
 export default (Vue as VueConstructor).extend({
   name: "App",
   store,
-  components: { CountersView, NavBar, RestButton },
+  components: { CountersView, NavBar}
 });
 </script>
 
