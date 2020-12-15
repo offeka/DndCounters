@@ -1,7 +1,7 @@
 <template>
-  <div class="modal fade" v-bind:id="modalName" tabindex="-1" role="dialog"
+  <div class="modal fade mo" v-bind:id="modalName" tabindex="-1" role="dialog"
        aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog" :class="{'modal-dialog-centered': centered}" role="document">
       <div class="modal-content">
         <slot class="modal-header" name="modal-header" v-if="title"></slot>
         <slot class="modal-body" name="modal-body"></slot>
@@ -21,7 +21,7 @@ interface ModalData {
 
 export default (Vue as VueConstructor).extend({
   name: "Modal",
-  props: {modalName: String, title: Boolean, show: Boolean},
+  props: {modalName: String, title: Boolean, show: Boolean, centered: Boolean},
   data(): ModalData {
     return {
       modal: undefined
@@ -51,5 +51,8 @@ export default (Vue as VueConstructor).extend({
 
 .modal-body {
   text-align: center;
+}
+.modal {
+  margin-top: 20px;
 }
 </style>

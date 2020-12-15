@@ -1,5 +1,5 @@
 <template>
-  <div class="grid-container" v-bind:class="deleted ? 'deleted' : ''">
+  <div class="grid-container">
     <label id="counter-name">
       <input
           type="text"
@@ -58,7 +58,6 @@ interface EditableData {
   counterName: string;
   maxCount?: number;
   displayAlert: boolean;
-  deleted: boolean;
 }
 
 export default (Vue as VueConstructor).extend({
@@ -70,7 +69,6 @@ export default (Vue as VueConstructor).extend({
       counterName: "",
       maxCount: undefined,
       displayAlert: false,
-      deleted: false,
     };
   },
   methods: {
@@ -95,25 +93,27 @@ export default (Vue as VueConstructor).extend({
       }
     },
   },
-  beforeDestroy() {
-    let newName: string = this.counter.name;
-    if (this.counterName !== "") {
-      newName = this.counterName;
+  destroyed() {
+    if (this.counter) {
+      let newName: string = this.counter.name;
+      if (this.counterName !== "") {
+        newName = this.counterName;
+      }
+      let newMax: number = this.counter.maxCount;
+      let newCurrent: number = this.counter.currentCount;
+      if (this.maxCount !== undefined) {
+        newMax = this.maxCount;
+        newCurrent = this.maxCount;
+      }
+      const newCounter: CounterModel = {
+        name: newName,
+        maxCount: newMax,
+        currentCount: newCurrent,
+        selected: this.counter.selected,
+        resetOn: this.counter.resetOn,
+      };
+      this.$store.commit("updateCounter", [newCounter, this.index]);
     }
-    let newMax: number = this.counter.maxCount;
-    let newCurrent: number = this.counter.currentCount;
-    if (this.maxCount !== undefined) {
-      newMax = this.maxCount;
-      newCurrent = this.maxCount;
-    }
-    const newCounter: CounterModel = {
-      name: newName,
-      maxCount: newMax,
-      currentCount: newCurrent,
-      selected: this.counter.selected,
-      resetOn: this.counter.resetOn,
-    };
-    this.$store.commit("updateCounter", [newCounter, this.index]);
   },
 });
 </script>

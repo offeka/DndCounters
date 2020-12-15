@@ -8,13 +8,6 @@
       <button @click="changeMode" class="navbar-button">
         {{ this.$store.state.mode === "edit" ? "Save" : "Edit" }}
       </button>
-      <button
-          class="navbar-button"
-          :class="this.$store.state.mode === 'edit' ? 'disabled' : ''"
-          @click="addCounter"
-      >
-        Add Counter
-      </button>
       <button class="navbar-button" data-toggle="modal" data-target="#rest-modal">
         Rest
       </button>
@@ -32,17 +25,6 @@
         </template>
       </modal>
     </div>
-    <modal>
-      <template v-slot:modal-body>
-        <div></div>
-        <form>
-
-        </form>
-      </template>
-      <template v-slot:modal-footer>
-
-      </template>
-    </modal>
   </div>
 </template>
 
