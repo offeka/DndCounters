@@ -33,11 +33,12 @@
     </modal>
     <modal modal-name="number-modal" :show="displayAlert">
       <template v-slot:modal-body class="modal-body">
-        <h5>Please enter a valid number as your max count</h5>
+        <h5 class="alert">Please enter a valid number as your max count</h5>
       </template>
       <template v-slot:modal-footer>
         <div class="footer">
-          <button class="btn btn-primary modal-button" @click="displayAlert = false;" data-dismiss="modal">Close</button>
+          <button class="btn btn-primary modal-button" @click="displayAlert = false;" data-dismiss="modal">Close
+          </button>
         </div>
       </template>
     </modal>
@@ -84,13 +85,13 @@ export default (Vue as VueConstructor).extend({
     ...mapState(["mode"]),
   },
   watch: {
-    maxCount(newValue: number) {
+    maxCount(newValue: string, oldValue?: string) {
       if (isNaN(Number(newValue))) {
-        console.log(this.$el);
-        this.displayAlert = true;
+        if (!oldValue || (newValue.length > oldValue.length))
+          this.displayAlert = true;
 
       } else {
-        this.maxCount = newValue;
+        this.maxCount = Number(newValue);
       }
     },
   },
@@ -102,8 +103,8 @@ export default (Vue as VueConstructor).extend({
     let newMax: number = this.counter.maxCount;
     let newCurrent: number = this.counter.currentCount;
     if (this.maxCount !== undefined) {
-      newMax = Number(this.maxCount);
-      newCurrent = Number(this.maxCount);
+      newMax = this.maxCount;
+      newCurrent = this.maxCount;
     }
     const newCounter: CounterModel = {
       name: newName,
