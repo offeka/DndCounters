@@ -1,136 +1,118 @@
 <template>
   <div class="grid-container" v-bind:class="deleted ? 'deleted' : ''">
-    <transition name="fade">
-      <div class="popup" v-if="displayAlert || !isValidNumber">
-        <div class="alert alert-danger">
-          {{
-            !isValidNumber
-              ? "Counter max isn't a number"
-              : "Are you sure you want to delete this counter?"
-          }}
-          <div v-if="isValidNumber">
-            <button
-              @click="removeCounter"
-              type="button"
-              class="btn"
-              aria-label="confirm"
-            >
-              👍
-            </button>
-            <button
-              type="button"
-              class="btn"
-              aria-label="Close"
-              @click="displayAlert = false"
-            >
-              👎
-            </button>
-          </div>
-          <div v-else>
-            <button
-              type="button"
-              class="btn-close btn-sm"
-              aria-label="Close"
-              @click="displayAlert = false"
-            ></button>
-          </div>
-        </div>
-      </div>
-    </transition>
     <label id="counter-name">
       <input
-        type="text"
-        v-bind:placeholder="this.counter.name"
-        v-model="counterName"
+          type="text"
+          v-bind:placeholder="this.counter.name"
+          v-model="counterName"
       />
     </label>
-    <button id="increase" type="button" class="btn btn-primary rounded-circle">
+    <button id="increase" type="button" class="btn btn-primary rounded-circle counter-button disabled">
       +
     </button>
     <label id="counter-max">
       <input
-        type="text"
-        v-bind:placeholder="this.counter.maxCount"
-        v-model="maxCount"
+          type="text"
+          v-bind:placeholder="this.counter.maxCount"
+          v-model="maxCount"
       />
     </label>
-    <button id="decrease" type="button" class="btn btn-primary rounded-circle">
+    <button id="decrease" type="button" class="btn btn-primary rounded-circle counter-button disabled">
       ─
     </button>
-    <button @click="displayAlert = true" id="delete-button">X</button>
+    <modal modal-name="confirm-modal">
+      <template v-slot:modal-body class="modal-body">
+        <h5>Are you sure you want to delete this counter?</h5>
+      </template>
+      <template v-slot:modal-footer>
+        <div class="footer">
+          <button class="btn btn-danger modal-button" @click="removeCounter" data-dismiss="modal">Yes!</button>
+          <button class="btn btn-dark modal-button" data-dismiss="modal">No</button>
+        </div>
+      </template>
+    </modal>
+    <modal modal-name="number-modal" :show="displayAlert">
+      <template v-slot:modal-body class="modal-body">
+        <h5>Please enter a valid number as your max count</h5>
+      </template>
+      <template v-slot:modal-footer>
+        <div class="footer">
+          <button class="btn btn-primary modal-button" @click="displayAlert = false;" data-dismiss="modal">Close</button>
+        </div>
+      </template>
+    </modal>
+    <button id="delete-button" class="rounded-1 btn btn-primary" data-toggle="modal" data-target="#confirm-modal">─
+    </button>
   </div>
+
 </template>
 
 <script lang="ts">
-import Vue, { VueConstructor } from "vue";
-import { CounterModel } from "@/types/CounterModel";
-import { mapState } from "vuex";
+import Vue, {VueConstructor} from "vue";
+import {CounterModel} from "@/types/CounterModel";
+import {mapState} from "vuex";
+import Modal from "@/components/Modal.vue";
 
 interface EditableData {
   counterName: string;
   maxCount?: number;
-  isValidNumber: boolean;
   displayAlert: boolean;
   deleted: boolean;
 }
 
 export default (Vue as VueConstructor).extend({
   name: "EditableCounter",
-  props: { index: Number },
+  components: {Modal},
+  props: {index: Number},
   data(): EditableData {
     return {
       counterName: "",
       maxCount: undefined,
-      isValidNumber: true,
       displayAlert: false,
       deleted: false,
     };
   },
   methods: {
-    removeCounter: function() {
-      this.deleted = true;
-    },
+    removeCounter(): void {
+      this.$store.commit("removeCounter", this.index)
+    }
   },
   computed: {
-    counter: function() {
+    counter: function () {
       return this.$store.getters.counterByIndex(this.index);
     },
     ...mapState(["mode"]),
   },
   watch: {
-    maxCountLocal(newValue: number) {
+    maxCount(newValue: number) {
       if (isNaN(Number(newValue))) {
-        this.isValidNumber = false;
+        console.log(this.$el);
         this.displayAlert = true;
+
       } else {
-        this.isValidNumber = true;
         this.maxCount = newValue;
       }
     },
   },
   beforeDestroy() {
-    if (!this.deleted && this.counter) {
-      let newName: string = this.counter.name;
-      if (this.counterName !== "") {
-        newName = this.counterName;
-      }
-      let newMax: number = this.counter.maxCount;
-      let newCurrent: number = this.counter.currentCount;
-      if (this.maxCount !== undefined) {
-        newMax = Number(this.maxCount);
-        newCurrent = Number(this.maxCount);
-      }
-      const newCounter: CounterModel = {
-        name: newName,
-        maxCount: newMax,
-        currentCount: newCurrent,
-        selected: this.counter.selected,
-        resetOn: this.counter.resetOn,
-      };
-      this.$store.commit("updateCounter", [newCounter, this.index]);
-    } else {
-      this.$store.commit("removeCounter", this.index);
+    let newName: string = this.counter.name;
+    if (this.counterName !== "") {
+      newName = this.counterName;
     }
+    let newMax: number = this.counter.maxCount;
+    let newCurrent: number = this.counter.currentCount;
+    if (this.maxCount !== undefined) {
+      newMax = Number(this.maxCount);
+      newCurrent = Number(this.maxCount);
+    }
+    const newCounter: CounterModel = {
+      name: newName,
+      maxCount: newMax,
+      currentCount: newCurrent,
+      selected: this.counter.selected,
+      resetOn: this.counter.resetOn,
+    };
+    this.$store.commit("updateCounter", [newCounter, this.index]);
   },
 });
 </script>
@@ -142,35 +124,21 @@ input {
 
 #delete-button {
   border: none;
-  color: white;
   font-weight: bold;
-  background-color: #0066cc;
-  padding: 20px;
-  border-radius: 100%;
   display: flex;
-  grid-column: 2;
-  grid-row: 1;
   justify-content: center;
-  outline: none;
   align-items: center;
-  width: fit-content;
-  transition: ease 0.3s;
+  width: 50px;
+  height: 20px;
+  grid-column: 3;
+  margin-left: 100%;
+  grid-row: 2;
 }
 
-#delete-button:hover {
-  color: black;
-  background-color: red;
-}
-
-.deleted {
-  opacity: 0;
-  visibility: hidden;
-  display: none;
-}
 
 #counter-name {
   grid-column: 2;
-  grid-row: 2;
+  grid-row: 1;
   padding-top: 10px;
 }
 
@@ -188,41 +156,23 @@ input {
 
 #counter-max {
   grid-column: 2;
-  grid-row: 3;
+  grid-row: 2;
   padding-top: 10px;
 }
 
-.popup {
-  z-index: 10;
-  grid-column-start: 1;
-  grid-column-end: 4;
-  grid-row: 1;
-  margin-bottom: 2px;
-  height: 20px;
-  font-size: 0.95rem;
-}
 
-.btn-close {
-  padding-top: initial;
-}
-
-.btn {
-  height: 50px;
+.counter-button {
   width: 50px;
+  height: 50px;
   margin: auto;
-  border: solid 1px #0066cc;
 }
 
-<<<<<<< head ======= .btn:hover {
-  background-color: #0066cc;
+.footer {
+  display: flex;
+  justify-content: center;
 }
 
->>>>>>>1b1edfc4e211e5258c74678ae906aab657fa70ce .fade-leave-active,
-.fade-enter-active {
-  transition: opacity 0.3s;
-}
-
-.fade-leave-to {
-  opacity: 0;
+.modal-button {
+  margin: 5px;
 }
 </style>
