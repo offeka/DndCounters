@@ -53,7 +53,7 @@
       data-toggle="modal"
       data-target="#confirm-modal"
     >
-      ─
+      <img src="../assets/trash-bin-closed.png" id="trash-icon" />
     </button>
   </div>
 </template>
