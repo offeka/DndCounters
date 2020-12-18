@@ -4,7 +4,8 @@
     <button
       id="increase"
       type="button"
-      class="btn btn-primary rounded-circle"
+      class="btn btn-primary rounded-circle counter-button"
+      :disabled="counter.maxCount === counter.currentCount"
       @click="increase"
     >
       +
@@ -15,7 +16,8 @@
     <button
       id="decrease"
       type="button"
-      class="btn btn-primary rounded-circle"
+      :disabled="counter.currentCount === 0"
+      class="btn btn-primary rounded-circle counter-button"
       @click="decrease"
     >
       ─
@@ -52,9 +54,15 @@ export default (Vue as VueConstructor).extend({
 <style scoped>
 #increase {
   grid-column: 3;
-  grid-row: 2;
   font-size: 1.4rem;
   padding-bottom: 10px;
+  grid-row: 2;
+}
+
+.counter-button {
+  height: 50px;
+  width: 50px;
+  margin: auto;
 }
 
 #decrease {
@@ -63,16 +71,26 @@ export default (Vue as VueConstructor).extend({
 }
 
 #display {
+  color: white;
+  user-select: none;
   grid-column: 2;
   grid-row: 2;
   text-align: center;
   margin: auto;
-  font-size: 2rem;
+  font-size: 28px;
 }
 
 #name {
   grid-column: 2;
   text-align: center;
+  margin-left: -130px;
+  text-overflow: ellipsis;
+  overflow-x: hidden;
+  align-items: center;
+  color: white;
+  height: 70px;
+  width: 400px;
+  user-select: none;
   padding-top: 5px;
   font-size: 2.5rem;
 }

@@ -69,7 +69,7 @@
       data-toggle="modal"
       data-target="#confirm-modal"
     >
-      ─
+      <img src="../assets/trash-bin-closed.png" id="trash-icon" />
     </button>
   </div>
 </template>
@@ -155,10 +155,16 @@ input {
   justify-content: center;
   align-items: center;
   width: 50px;
-  height: 20px;
+  height: 50px;
+  border-radius: 16px;
   grid-column: 3;
   margin-left: 100%;
   grid-row: 2;
+}
+
+#trash-icon {
+  width: 25px;
+  height: 25px;
 }
 
 #counter-name {
