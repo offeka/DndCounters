@@ -12,7 +12,7 @@
     </button>
     <label id="counter-max">
       <input
-          type="text"
+          type="number"
           v-bind:placeholder="this.counter.maxCount"
           v-model="maxCount"
       />
@@ -28,17 +28,6 @@
         <div class="footer">
           <button class="btn btn-danger modal-button" @click="removeCounter" data-dismiss="modal">Yes!</button>
           <button class="btn btn-dark modal-button" data-dismiss="modal">No</button>
-        </div>
-      </template>
-    </modal>
-    <modal modal-name="number-modal" :show="displayAlert">
-      <template v-slot:modal-body class="modal-body">
-        <h5 class="alert">Please enter a valid number as your max count</h5>
-      </template>
-      <template v-slot:modal-footer>
-        <div class="footer">
-          <button class="btn btn-primary modal-button" @click="displayAlert = false;" data-dismiss="modal">Close
-          </button>
         </div>
       </template>
     </modal>
@@ -109,7 +98,6 @@ export default (Vue as VueConstructor).extend({
         name: newName,
         maxCount: newMax,
         currentCount: newCurrent,
-        selected: this.counter.selected,
         resetOn: this.counter.resetOn,
       };
       this.$store.commit("updateCounter", [newCounter, this.index]);
