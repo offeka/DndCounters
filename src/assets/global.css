@@ -3,6 +3,7 @@
   grid-template-columns: 70px 120px 70px;
   grid-row-gap: 0;
   justify-content: center;
+  font-family: "Heebo";
   grid-template-rows: 50px 50px;
   margin-top: 10px;
 }
