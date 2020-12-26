@@ -20,7 +20,6 @@
     >
       ─
     </button>
-    <input type="checkbox" @click="select" v-model="counter.selected" />
   </div>
 </template>
 

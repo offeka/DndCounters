@@ -7,3 +7,8 @@
     margin-top: 10px;
 }
 
+.btn:focus {
+    box-shadow: none;
+    outline: 0;
+}
+

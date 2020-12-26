@@ -1,38 +1,42 @@
 <template>
   <div id="container">
     <div id="title-container">
-      <img id="logo" src="@/assets/logo.png" />
+      <img id="logo" src="@/assets/logo.png"/>
       <div id="title">{{ appTitle }}</div>
     </div>
     <div id="buttons-container">
       <button @click="changeMode" class="navbar-button">
         {{ this.$store.state.mode === "edit" ? "Save" : "Edit" }}
       </button>
-      <button
-        class="navbar-button"
-        :class="this.$store.state.mode === 'edit' ? 'disabled' : ''"
-        @click="addCounter"
-      >
-        Add Counter
+      <button class="navbar-button" data-toggle="modal" data-target="#rest-modal">
+        Rest
       </button>
-      <button
-        class="navbar-button"
-        :class="this.$store.state.mode === 'edit' ? 'disabled' : ''"
-        @click="removeCounters"
-      >
-        Remove Selected Counters
-      </button>
+      <modal modal-name="rest-modal">
+        <template v-slot:modal-body>Choose your rest type</template>
+        <template v-slot:modal-footer>
+          <div>
+            <button type="button" class="btn btn-primary" data-dismiss="modal" @click="longRest">Long
+              rest
+            </button>
+            <button type="button" class="btn btn-primary" data-dismiss="modal" @click="shortRest">Short
+              rest
+            </button>
+          </div>
+        </template>
+      </modal>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
-import store from "@/store";
+import Modal from "@/components/Modal.vue";
+import {mapMutations} from "vuex";
+
 export default Vue.extend({
   name: "NavBar",
-  store,
-  props: { appTitle: String },
+  components: {Modal},
+  props: {appTitle: String},
   methods: {
     changeMode(): void {
       this.$store.commit("changeMode");
@@ -47,9 +51,7 @@ export default Vue.extend({
       });
       this.changeMode();
     },
-    removeCounters(): void {
-      this.$store.commit("removeSelectedCounters");
-    },
+    ...mapMutations(["longRest", "shortRest"])
   },
 });
 </script>
@@ -57,7 +59,7 @@ export default Vue.extend({
 <style scoped>
 #container {
   width: 100%;
-  font-family: "Heebo";
+  font-family: "Heebo", serif;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -67,6 +69,7 @@ export default Vue.extend({
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4);
   background-color: #0066cc;
 }
+
 #buttons-container,
 #title-container {
   display: flex;
@@ -108,5 +111,14 @@ export default Vue.extend({
   background-color: #478fd6;
   pointer-events: none;
   cursor: not-allowed;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: center;
+}
+
+.btn {
+  margin: 5px;
 }
 </style>
