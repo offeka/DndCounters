@@ -74,9 +74,10 @@ export default (Vue as VueConstructor).extend({
   watch: {
     maxCount(newValue: string, oldValue?: string) {
       if (isNaN(Number(newValue))) {
-        if (!oldValue || (newValue.length > oldValue.length))
+        if (!oldValue || (newValue.length > oldValue.length)) {
           this.displayAlert = true;
-
+          this.maxCount = 0;
+        }
       } else {
         this.maxCount = Number(newValue);
       }

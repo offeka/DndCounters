@@ -1,5 +1,5 @@
 <template>
-  <modal modal-name="add-button" :title="true">
+  <modal modal-name="add-button" useHeader="true">
     <template v-slot:modal-header>
       Create new counter
     </template>

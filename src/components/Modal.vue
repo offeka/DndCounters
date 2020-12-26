@@ -3,7 +3,7 @@
        aria-hidden="true">
     <div class="modal-dialog" :class="{'modal-dialog-centered': centered}" role="document">
       <div class="modal-content">
-        <slot class="modal-header" name="modal-header" v-if="title"></slot>
+        <slot class="modal-header" name="modal-header" v-if="useHeader"></slot>
         <slot class="modal-body" name="modal-body"></slot>
         <slot name="modal-footer"></slot>
       </div>
@@ -21,7 +21,7 @@ interface ModalData {
 
 export default (Vue as VueConstructor).extend({
   name: "Modal",
-  props: {modalName: String, title: Boolean, show: Boolean, centered: Boolean},
+  props: {modalName: String, useHeader: Boolean, show: Boolean, centered: Boolean},
   data(): ModalData {
     return {
       modal: undefined
