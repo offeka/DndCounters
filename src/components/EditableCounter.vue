@@ -2,30 +2,22 @@
   <div class="grid-container">
     <label id="counter-name">
       <input
-        type="text"
-        v-bind:placeholder="this.counter.name"
-        v-model="counterName"
+          type="text"
+          v-bind:placeholder="this.counter.name"
+          v-model="counterName"
       />
     </label>
-    <button
-      id="increase"
-      type="button"
-      class="btn btn-primary rounded-circle counter-button disabled"
-    >
+    <button id="increase" type="button" class="btn btn-primary rounded-circle counter-button disabled">
       +
     </button>
     <label id="counter-max">
       <input
-        type="number"
-        v-bind:placeholder="this.counter.maxCount"
-        v-model="maxCount"
+          type="number"
+          v-bind:placeholder="this.counter.maxCount"
+          v-model="maxCount"
       />
     </label>
-    <button
-      id="decrease"
-      type="button"
-      class="btn btn-primary rounded-circle counter-button disabled"
-    >
+    <button id="decrease" type="button" class="btn btn-primary rounded-circle counter-button disabled">
       ─
     </button>
     <modal modal-name="confirm-modal">
@@ -34,34 +26,21 @@
       </template>
       <template v-slot:modal-footer>
         <div class="footer">
-          <button
-            class="btn btn-danger modal-button"
-            @click="removeCounter"
-            data-dismiss="modal"
-          >
-            Yes!
-          </button>
-          <button class="btn btn-dark modal-button" data-dismiss="modal">
-            No
-          </button>
+          <button class="btn btn-danger modal-button" @click="removeCounter" data-dismiss="modal">Yes!</button>
+          <button class="btn btn-dark modal-button" data-dismiss="modal">No</button>
         </div>
       </template>
     </modal>
-    <button
-      id="delete-button"
-      class="rounded-1 btn btn-primary"
-      data-toggle="modal"
-      data-target="#confirm-modal"
-    >
-      <img src="../assets/trash-bin-closed.png" id="trash-icon" />
+    <button id="delete-button" class="rounded-1 btn btn-primary" data-toggle="modal" data-target="#confirm-modal">─
     </button>
   </div>
+
 </template>
 
 <script lang="ts">
-import Vue, { VueConstructor } from "vue";
-import { CounterModel } from "@/types/CounterModel";
-import { mapState } from "vuex";
+import Vue, {VueConstructor} from "vue";
+import {CounterModel} from "@/types/CounterModel";
+import {mapState} from "vuex";
 import Modal from "@/components/Modal.vue";
 
 interface EditableData {
@@ -72,8 +51,8 @@ interface EditableData {
 
 export default (Vue as VueConstructor).extend({
   name: "EditableCounter",
-  components: { Modal },
-  props: { index: Number },
+  components: {Modal},
+  props: {index: Number},
   data(): EditableData {
     return {
       counterName: "",
@@ -83,11 +62,11 @@ export default (Vue as VueConstructor).extend({
   },
   methods: {
     removeCounter(): void {
-      this.$store.commit("removeCounter", this.index);
-    },
+      this.$store.commit("removeCounter", this.index)
+    }
   },
   computed: {
-    counter: function() {
+    counter: function () {
       return this.$store.getters.counterByIndex(this.index);
     },
     ...mapState(["mode"]),
@@ -95,8 +74,10 @@ export default (Vue as VueConstructor).extend({
   watch: {
     maxCount(newValue: string, oldValue?: string) {
       if (isNaN(Number(newValue))) {
-        if (!oldValue || newValue.length > oldValue.length)
+        if (!oldValue || (newValue.length > oldValue.length)) {
           this.displayAlert = true;
+          this.maxCount = 0;
+        }
       } else {
         this.maxCount = Number(newValue);
       }
@@ -138,17 +119,12 @@ input {
   justify-content: center;
   align-items: center;
   width: 50px;
-  height: 50px;
-  border-radius: 16px;
+  height: 20px;
   grid-column: 3;
   margin-left: 100%;
   grid-row: 2;
 }
 
-#trash-icon {
-  width: 25px;
-  height: 25px;
-}
 
 #counter-name {
   grid-column: 2;
@@ -174,6 +150,7 @@ input {
   padding-top: 10px;
 }
 
+
 .counter-button {
   width: 50px;
   height: 50px;
@@ -183,15 +160,6 @@ input {
 .footer {
   display: flex;
   justify-content: center;
-}
-
-.btn:hover {
-  background-color: #0066cc;
-}
-
-.fade-leave-active,
-.fade-enter-active {
-  transition: opacity 0.3s;
 }
 
 .modal-button {
