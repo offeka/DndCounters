@@ -36,11 +36,4 @@ export default (Vue as VueConstructor).extend({
 });
 </script>
 
-<style scoped>
-#container {
-  position: fixed;
-  right: 50%;
-  left: 50%;
-  top: 12%;
-}
-</style>
+<style scoped></style>

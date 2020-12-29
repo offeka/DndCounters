@@ -72,8 +72,6 @@ export default Vue.extend({
 
 <style scoped>
 #container {
-  position: fixed;
-  top: 0;
   width: 100%;
   font-family: "Heebo", serif;
   display: flex;
