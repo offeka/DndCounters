@@ -20,7 +20,7 @@
     <button id="decrease" type="button" class="btn btn-primary rounded-circle counter-button disabled">
       ─
     </button>
-    <modal modal-name="confirm-modal">
+    <modal v-bind:modal-name="'confirm-modal' + this.index">
       <template v-slot:modal-body class="modal-body">
         <h5>Are you sure you want to delete this counter?</h5>
       </template>
@@ -31,7 +31,8 @@
         </div>
       </template>
     </modal>
-    <button id="delete-button" class="rounded-1 btn btn-primary" data-toggle="modal" data-target="#confirm-modal">─
+    <button id="delete-button" class="rounded-1 btn btn-primary" data-toggle="modal"
+            v-bind:data-target="'#confirm-modal' + this.index">─
     </button>
   </div>
 
@@ -62,7 +63,7 @@ export default (Vue as VueConstructor).extend({
   },
   methods: {
     removeCounter(): void {
-      this.$store.commit("removeCounter", this.index)
+      Vue.nextTick().then(() => this.$store.commit("removeCounter", this.index));
     }
   },
   computed: {
@@ -81,7 +82,7 @@ export default (Vue as VueConstructor).extend({
       } else {
         this.maxCount = Number(newValue);
       }
-    },
+    }
   },
   destroyed() {
     if (this.counter) {
@@ -89,11 +90,14 @@ export default (Vue as VueConstructor).extend({
       if (this.counterName !== "") {
         newName = this.counterName;
       }
-      let newMax: number = this.counter.maxCount;
-      let newCurrent: number = this.counter.currentCount;
+      let newMax = Number(this.counter.maxCount);
+      let newCurrent = Number(this.counter.currentCount);
       if (this.maxCount !== undefined) {
         newMax = this.maxCount;
-        newCurrent = this.maxCount;
+        newCurrent = this.counter.currentCount + (newMax - this.maxCount);
+        if (newCurrent > newMax) {
+          newCurrent = newMax;
+        }
       }
       const newCounter: CounterModel = {
         name: newName,

@@ -1,5 +1,5 @@
 <template>
-  <modal modal-name="add-button" useHeader="true">
+  <modal modal-name="add-button" v-bind:useHeader="true">
     <template v-slot:modal-header>
       Create new counter
     </template>
@@ -104,6 +104,17 @@ export default (Vue as VueConstructor).extend({
       restType: "ShortRest",
     };
   },
+  watch: {
+    counterMax(newValue, oldValue): void {
+      if (isNaN(Number(newValue))) {
+        if (!oldValue || newValue.length > oldValue.length) {
+          this.counterMax = 0;
+        }
+      } else {
+        this.counterMax = Number(newValue);
+      }
+    },
+  },
   methods: {
     submit(): void {
       const counter: CounterModel = {
@@ -113,6 +124,8 @@ export default (Vue as VueConstructor).extend({
         resetOn: this.restType,
       };
       this.$store.commit("addCounter", counter);
+      this.counterName = "";
+      this.counterMax = 0;
     },
   },
 });
