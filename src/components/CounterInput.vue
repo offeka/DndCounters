@@ -7,24 +7,53 @@
       <div class="input-group">
         <div class="form-group">
           <label for="counter-name" class="form-label">Counter name:</label>
-          <input type="text" class="form-control counter-input" placeholder="counter name" aria-label="counter name"
-                 id="counter-name" required min="1" v-model="counterName">
+          <input
+            type="text"
+            class="form-control counter-input"
+            placeholder="counter name"
+            aria-label="counter name"
+            id="counter-name"
+            required
+            min="1"
+            v-model="counterName"
+          />
         </div>
         <div class="form-group">
           <label for="counter-max" class="form-label">Counter max:</label>
-          <input type="number" class="form-control counter-input" placeholder="max counter" aria-label="max count"
-                 id="counter-max" required min="1" v-model="counterMax">
+          <input
+            type="number"
+            class="form-control counter-input"
+            placeholder="max counter"
+            aria-label="max count"
+            id="counter-max"
+            required
+            min="1"
+            v-model="counterMax"
+          />
         </div>
         <div>
           <div class="form-check">
-            <input class="form-check-input" type="radio" name="rest" id="short-rest" value="ShortRest"
-                   v-model="restType">
+            <input
+              class="form-check-input"
+              type="radio"
+              name="rest"
+              id="short-rest"
+              value="ShortRest"
+              v-model="restType"
+            />
             <label class="form-check-label" for="short-rest">
               Short rest
             </label>
           </div>
           <div class="form-check">
-            <input class="form-check-input" type="radio" name="rest" id="long-rest" value="LongRest" v-model="restType">
+            <input
+              class="form-check-input"
+              type="radio"
+              name="rest"
+              id="long-rest"
+              value="LongRest"
+              v-model="restType"
+            />
             <label class="form-check-label" for="long-rest">
               Long rest
             </label>
@@ -34,17 +63,30 @@
     </template>
     <template v-slot:modal-footer>
       <div class="form-footer">
-        <button data-toggle="modal" data-target="#add-button" class="btn btn-success" @click="submit">Ok</button>
-        <button data-toggle="modal" data-target="#add-button" class="btn btn-dark">Close</button>
+        <button
+          data-toggle="modal"
+          data-target="#add-button"
+          class="btn btn-success"
+          @click="submit"
+        >
+          Ok
+        </button>
+        <button
+          data-toggle="modal"
+          data-target="#add-button"
+          class="btn btn-dark"
+        >
+          Close
+        </button>
       </div>
     </template>
   </modal>
 </template>
 
 <script lang="ts">
-import Vue, {VueConstructor} from "vue";
+import Vue, { VueConstructor } from "vue";
 import Modal from "@/components/Modal.vue";
-import {CounterModel, RestType} from "@/types/CounterModel";
+import { CounterModel, RestType } from "@/types/CounterModel";
 
 interface CounterData {
   counterName: string;
@@ -54,24 +96,24 @@ interface CounterData {
 
 export default (Vue as VueConstructor).extend({
   name: "CounterInput",
-  components: {Modal},
+  components: { Modal },
   data(): CounterData {
     return {
       counterName: "",
       counterMax: 0,
-      restType: "ShortRest"
-    }
+      restType: "ShortRest",
+    };
   },
   watch: {
     counterMax(newValue, oldValue): void {
       if (isNaN(Number(newValue))) {
-        if (!oldValue || (newValue.length > oldValue.length)) {
+        if (!oldValue || newValue.length > oldValue.length) {
           this.counterMax = 0;
         }
       } else {
         this.counterMax = Number(newValue);
       }
-    }
+    },
   },
   methods: {
     submit(): void {
@@ -79,14 +121,14 @@ export default (Vue as VueConstructor).extend({
         name: this.counterName,
         maxCount: this.counterMax,
         currentCount: this.counterMax,
-        resetOn: this.restType
-      }
-      this.$store.commit("addCounter", counter)
+        resetOn: this.restType,
+      };
+      this.$store.commit("addCounter", counter);
       this.counterName = "";
       this.counterMax = 0;
-    }
-  }
-})
+    },
+  },
+});
 </script>
 
 <style scoped>

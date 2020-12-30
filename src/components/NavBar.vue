@@ -1,25 +1,39 @@
 <template>
   <div id="container">
     <div id="title-container">
-      <img id="logo" src="@/assets/logo.png"/>
+      <img id="logo" src="@/assets/logo.png" />
       <div id="title">{{ appTitle }}</div>
     </div>
     <div id="buttons-container">
       <button @click="changeMode" class="navbar-button">
         {{ this.$store.state.mode === "edit" ? "Save" : "Edit" }}
       </button>
-      <button class="navbar-button" data-toggle="modal" data-target="#rest-modal">
+      <button
+        class="navbar-button"
+        data-toggle="modal"
+        data-target="#rest-modal"
+      >
         Rest
       </button>
       <modal modal-name="rest-modal">
         <template v-slot:modal-body>Choose your rest type</template>
         <template v-slot:modal-footer>
           <div>
-            <button type="button" class="btn btn-primary" data-dismiss="modal" @click="longRest">Long
-              rest
+            <button
+              type="button"
+              class="btn btn-primary"
+              data-dismiss="modal"
+              @click="longRest"
+            >
+              Long rest
             </button>
-            <button type="button" class="btn btn-primary" data-dismiss="modal" @click="shortRest">Short
-              rest
+            <button
+              type="button"
+              class="btn btn-primary"
+              data-dismiss="modal"
+              @click="shortRest"
+            >
+              Short rest
             </button>
           </div>
         </template>
@@ -31,12 +45,12 @@
 <script lang="ts">
 import Vue from "vue";
 import Modal from "@/components/Modal.vue";
-import {mapMutations} from "vuex";
+import { mapMutations } from "vuex";
 
 export default Vue.extend({
   name: "NavBar",
-  components: {Modal},
-  props: {appTitle: String},
+  components: { Modal },
+  props: { appTitle: String },
   methods: {
     changeMode(): void {
       this.$store.commit("changeMode");
@@ -51,7 +65,7 @@ export default Vue.extend({
       });
       this.changeMode();
     },
-    ...mapMutations(["longRest", "shortRest"])
+    ...mapMutations(["longRest", "shortRest"]),
   },
 });
 </script>
